@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeLeaf.org"
+      th:replace="~{base::Layout(~{::section})}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<section>
+    <div class="container mt-5 p-6 " >
+        <div class="row">
+            <div class="col-md-6 mt-5 p-5">
+                <img src="image/loginreg.jpg" width="500px" height="500px">
+
+            </div>
+            <div class="col-md-6 mt-1 p-5">
+                <div class="card shadow-lg p-3 mb-5 bg-body-tertiary rounded bg-light text-dark">
+                    <div class="card-header text-center">
+                        <p class="fs-4 text-center">Register</p>
+                        <th:block th:if="${session.succMsg}">
+                            <p class="text-success fw-bold">[[${session.succMsg}]]</p>
+                            <th:block th:text="${@commonServiceImpl.removeSessionService()}"></th:block>
+                        </th:block>
+
+
+                        <th:block th:if="${session.errorMsg}">
+                            <p class="text-danger fw-bold">[[${session.errorMsg}]]</p>
+                            <th:block th:text="${@commonServiceImpl.removeSessionService()}"></th:block>
+                        </th:block>
+                    </div>
+                    <div class="card-body">
+                        <form th:action="@{/saveUser}" enctype="multipart/form-data" id="userRegistration" method="post" novalidate>
+                            <div class="row">
+                            <div class="col">
+                                <label class="form-label">Full Name</label>
+                                <input class="form-control" name="name" type="text" required>
+                            </div>
+                            <div class="col">
+                                <label class="form-label">Mobile Number</label>
+                                <input class="form-control" name="number" type="text" required>
+                            </div>
+                            </div>
+
+                            <div class="md-3">
+                                <label class="form-label">Email</label>
+                                <input class="form-control" name="email" type="email" required>
+                            </div>
+
+                            <div class="row">
+                                <div class="col">
+                                    <label class="form-label">Address</label>
+                                    <input class="form-control" name="address" type="text" required>
+                                </div>
+                                <div class="col">
+                                    <label class="form-label">city</label>
+                                    <input class="form-control" name="city" type="text"  required>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col">
+                                    <label class="form-label">State</label>
+                                    <input class="form-control" name="state" type="text" required>
+                                </div>
+                                <div class="col">
+                                    <label class="form-label">Pincode</label>
+                                    <input class="form-control" name="pincode" type="text" required>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col">
+                                    <label class="form-label">Password</label>
+                                    <input class="form-control" name="password" type="password" required>
+                                </div>
+                                <div class="col">
+                                    <label class="form-label">Confirm Password</label>
+                                    <input class="form-control" name="confirmPassword" type="password" required>
+                                </div>
+                            </div>
+
+                            <div class="md-3">
+                                <label class="form-label">Profile Image</label>
+                                <input class="form-control" name="image" type="file" required>
+                            </div>
+
+                            <button type="submit"
+                                    class="btn bg-primary text-white col-md-12 mt-3">Register</button>
+
+                        </form>
+                    </div>
+                    <div class="card-footer text-center">
+                        Already Registered..
+                        <a href="/signin">Login</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>

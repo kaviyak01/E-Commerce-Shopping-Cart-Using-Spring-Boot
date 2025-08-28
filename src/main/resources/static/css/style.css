@@ -1,0 +1,25 @@
+charset="UTF-8";
+ .card-sh{
+ box-shadow: 0 0 8px rgba(0,0,0,0.3)
+ }
+ .cat-div{
+ box-shadow: 0 0 10px rgba(0,0,0,1)
+ }
+
+
+ <style>
+     .product-card {
+         height: 100%;               /* Full height */
+         min-height: 400px;          /* Adjust as needed */
+         display: flex;
+         flex-direction: column;
+         justify-content: space-between;
+     }
+
+     .product-image {
+         width: 150px;
+         height: 150px;
+         object-fit: contain; /* or 'cover' if you want full fill */
+         margin-bottom: 10px;
+     }
+ </style>

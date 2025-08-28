@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{base::Layout(~{::section})}">
+<head>
+    <meta charset="UTF-8">
+    <title>All Products</title>
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+    <style>
+        .search-input {
+            max-width: 300px;
+        }
+
+        .btn:hover {
+            transform: scale(1.03);
+            transition: 0.2s;
+        }
+
+        .table img {
+            border-radius: 5px;
+            object-fit: cover;
+        }
+
+        .card {
+            border-radius: 1rem;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+        }
+    </style>
+</head>
+<body>
+<section>
+    <div class="container-fluid mt-5 p-4">
+        <div class="card">
+            <div class="d-flex justify-content-between align-items-center p-3">
+                <a href="/admin/" class="btn btn-outline-secondary"><i class="bi bi-arrow-left"></i> Back</a>
+                <form class="d-flex" role="search" action="/admin/ViewProduct" method="get">
+                    <input class="form-control me-2 search-input" type="search" placeholder="Search product" name="ch" th:value="${ch}" aria-label="Search" required>
+                    <button class="btn btn-outline-primary" type="submit"><i class="bi bi-search"></i></button>
+                </form>
+            </div>
+
+            <div class="card-header text-center">
+                <h4 class="text-primary">All Products</h4>
+
+                <th:block th:if="${session.succMsg}">
+                    <div class="alert alert-success">[[${session.succMsg}]]</div>
+                    <th:block th:text="${@commonServiceImpl.removeSessionService()}"></th:block>
+                </th:block>
+
+                <th:block th:if="${session.errorMsg}">
+                    <div class="alert alert-danger">[[${session.errorMsg}]]</div>
+                    <th:block th:text="${@commonServiceImpl.removeSessionService()}"></th:block>
+                </th:block>
+            </div>
+
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle text-center">
+                        <thead class="table-light">
+                        <tr class="table-light">
+                            <th>S.No</th>
+                            <th>Title</th>
+                            <th>Image</th>
+                            <th>Category</th>
+                            <th>Price</th>
+                            <th>Discount</th>
+                            <th>Discount Price</th>
+                            <th>Status</th>
+                            <th>Stock</th>
+                            <th>Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="pro,c:${Products}">
+                            <td>[[${c.count}]]</td>
+                            <td>[[${pro.title}]]</td>
+                            <td><img th:src="${pro.imageName}" width="50" height="50"></td>
+                            <td>[[${pro.category}]]</td>
+                            <td>[[${pro.price}]]</td>
+                            <td>[[${pro.discount}]]%</td>
+                            <td>₹[[${pro.discountPrice}]]</td>
+                            <td>[[${pro.isActive}]]</td>
+                            <td>[[${pro.stock}]]</td>
+                            <td>
+                                <a th:href="@{'/admin/editProduct/'+${pro.id}}" class="btn btn-primary btn-sm mb-1">
+                                    <i class="bi bi-pencil-square"></i> Edit
+                                </a>
+                                <a th:href="@{'/admin/deleteProduct/'+${pro.id}}" class="btn btn-danger btn-sm">
+                                    <i class="bi bi-trash"></i> Delete
+                                </a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <!--pagination-->
+                    <div class="row mt-5">
+
+                        <div class="col-md-4">Total Products: [[${totalElements}]]</div>
+                        <div class="col-md-6">
+                            <nav aria-label="Page navigation example">
+                                <ul class="pagination">
+
+                                    <!-- Previous button -->
+                                    <li class="page-item" th:if="${pageNo > 0}" th:classappend="${first} ? 'disabled' : ''">
+                                        <a class="page-link"
+                                           th:href="@{/admin/ViewProduct(pageNo=${pageNo - 1}, ch=${ch})}"
+                                           aria-label="Previous">
+                                            <span aria-hidden="true">&laquo;</span>
+                                        </a>
+                                    </li>
+
+                                    <!-- Page numbers -->
+                                    <li th:each="i : ${#numbers.sequence(1, totalPages)}"
+                                        class="page-item"
+                                        th:classappend="${currentPage== i} ? 'active' : ''">
+                                        <a class="page-link"
+                                           th:href="@{/admin/ViewProduct(pageNo=${i - 1}, ch=${ch})}">
+                                            [[${i}]]
+                                        </a>
+                                    </li>
+
+                                    <!-- Next button -->
+                                    <li class="page-item" th:classappend="${last} ? 'disabled' : ''">
+                                        <a class="page-link"
+                                           th:href="@{/admin/ViewProduct(pageNo=${pageNo + 1}, ch=${ch})}"
+                                           aria-label="Next">
+                                            <span aria-hidden="true">&raquo;</span>
+                                        </a>
+                                    </li>
+
+                                </ul>
+                            </nav>
+                        </div>
+
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+</section>
+</body>
+</html>

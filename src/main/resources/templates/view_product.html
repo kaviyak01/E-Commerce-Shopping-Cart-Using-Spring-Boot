@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeLeaf.org" th:replace="~{base::Layout(~{::section})}">
+<head>
+    <meta charset="UTF-8">
+    <title>Product Details</title>
+</head>
+<body>
+<section>
+    <div class="container mt-4" style="margin-bottom:120px">
+        <div class="card p-4">
+            <p class="fs-5 text-center fw-bold">Product Details</p>
+
+            <th:block th:if="${session.succMsg}">
+                <p class="text-success text-center fw-bold alert alert-success">[[${session.succMsg}]]</p>
+                <th:block th:text="${@commonServiceImpl.removeSessionService()}"></th:block>
+            </th:block>
+
+
+            <th:block th:if="${session.errorMsg}">
+                <p class="text-danger text-center fw-bold alert alert-danger">[[${session.errorMsg}]]</p>
+                <th:block th:text="${@commonServiceImpl.removeSessionService()}"></th:block>
+            </th:block>
+
+            <div class="row">
+                <!-- Left Side - Image -->
+                <div class="col-md-6 text-center">
+                    <input type="hidden" name="id" th:value="${product.id}">
+                    <img th:src="@{'/image/product/'+${product.imageName}}" width="350px" height="550px" class="img-fluid">
+                </div>
+
+                <!-- Right Side - Product Info -->
+                <div class="col-md-6">
+                    <h4>[[${product.title}]]</h4>
+
+                    <p class="fw-bold mt-3 mb-1">Description:</p>
+                    <p>
+                        [[${product.description}]]
+                    </p>
+
+                    <p class="fw-bold mb-1">Product Details:</p>
+                    <ul class="list-unstyled">
+                        <li>Status:
+                            <th:block th:if="${product.stock>0}">
+                                <span class="btn btn-success text-white fw-bold">Available</span>
+                            </th:block>
+
+                            <th:block th:unless="${product.stock>0}">
+                                <span class="btn btn-warning btn-sm text-white fw-bold">Out of Stock</span></li>
+                            </th:block>
+
+
+                        <!-- For out of stock, replace above with: <span class="text-danger fw-bold">Out of Stock</span> -->
+                        <li>Category: [[${product.category}]]</li>
+                        <li>Policy: 7 Days Replacement and Return</li>
+                    </ul>
+
+                    <hr>
+
+                    <p class="mb-2">
+                        <span class="fw-bold fs-5 text-black">₹[[${product.discountPrice}]]</span>
+                        <span class="text-muted text-decoration-line-through ms-2">₹[[${product.price}]]</span>
+                        <span class="text-success fw-semibold ms-2">[[${product.discount}]]% OFF</span>
+                    </p>
+
+                    <div class="d-flex align-items-center mb-3">
+                        <span class="me-4"><i class="bi bi-cash-coin text-primary"></i> Cash on Delivery</span>
+                        <span class="me-4"><i class="bi bi-arrow-repeat text-primary"></i> Return Available</span>
+                        <span><i class="bi bi-truck text-primary"></i> Free Shipping</span>
+                    </div>
+                    <th:block th:if="${product.stock>0}">
+                        <th:block th:if="${user==null}">
+                        <a href="/signin"  class="btn btn-danger col-md-12 ">Add to Cart</a>
+                        </th:block>
+
+                        <th:block th:unless="${user==null}">
+                            <a th:href="@{'/addCart?pid=' +${product.id}+'&uid=' +${user.id} }"  class="btn btn-danger col-md-12 ">Add to Cart</a>
+                        </th:block>
+                    </th:block>
+
+                    <th:block th:unless="${product.stock>0}">
+                        <a href="" class="btn btn-warning btn-sm text-white fw-bold">Out of Stock</a>
+                    </th:block>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeLeaf.org"
+      th:replace="~{base::Layout(~{::section})}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<section>
+    <div class="container-fluid mt-5 p-5 ">
+        <div class="card card.sh ">
+
+            <div class="card-header text-center">
+                <p class="fs-4">My Orders</p>
+                <th:block th:if="${session.succMsg}">
+                    <p class="text-success fw-bold">[[${session.succMsg}]]</p>
+                    <th:block th:text="${@commonServiceImpl.removeSessionService()}"></th:block>
+                </th:block>
+
+
+                <th:block th:if="${session.errorMsg}">
+                    <p class="text-danger fw-bold">[[${session.errorMsg}]]</p>
+                    <th:block th:text="${@commonServiceImpl.removeSessionService()}"></th:block>
+                </th:block>
+            </div>
+            <div class="card-body">
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th scope="col">Order Id</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Product Detail</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="o:${orders}">
+                        <th scope="row">[[${o.orderId}]]</th>
+                        <td>[[${o.orderDate}]]</td>
+                        <td>[[${o.product.title}]]</td>
+                        <td>Quantity: [[${o.quantity}]] <br>Price: [[${o.price}]] <br> TotalPrice: [[${o.quantity * o.price}]]</td>
+                        <td>[[${o.status}]]</td>
+                        <td>
+                            <th:block th:if="${o.status!='Cancelled'}">
+                            <a th:href="@{'/update-status?oid='+${o.id}+'&st=6'}" class="btn btn-danger btn-sm">Cancel</a>
+                            </th:block>
+
+                            <th:block th:unless="${o.status!='Cancelled'}">
+                                <a href="#" class="btn btn-danger btn-sm disabled">Cancel</a>
+                            </th:block>
+                        </td>
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</section>
+</body>
+</html>
